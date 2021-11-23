@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
- 
 class Forca {
     public:
         enum Dificuldade{
@@ -8,18 +7,29 @@ class Forca {
         };
     private:
         //TODO: armazenar os scores?
-       
         std::vector< std::pair<std::string, int> > m_palavras; //<! palavras e sua ocorrência no Corpus
- 
+
+        std::vector<std::string> palavras_certas; //<! vetor para armazenar as palavras que o jogador for acertando na partida
+        
         std::string m_arquivo_scores; //<! nome do arquivo contendo os scores
  
         std::string m_arquivo_palavras; //<! nome do arquivo contendo as palavras
  
-        Dificuldade d = Dificuldade::FACIL; //<! dificuldade do jogo
+        Dificuldade dificuldade = Dificuldade::FACIL; //<! dificuldade do jogo
  
         std::string m_palavra_atual; //<! palavra sendo testada atualmente
  
         int m_tentativas_restantes = 6; //<! tentativas restantes
+
+        int pontuacao = 0; //<!
+
+        float media_frequencia; //<! 
+
+        int qtd_palavras_jogadas; //<! Armazena a quantidade de palavras sorteadas para usar como base de cálculo para o nível de dificuldade Médio
+
+        std::vector<std::string> palavra_tempo_real;
+
+        std::vector<std::string> letras_informadas;
    
     public:
         /**
@@ -55,7 +65,9 @@ class Forca {
          * @see proxima_palavra
          */
         void set_dificuldade(Dificuldade d);
- 
+
+        //Criei
+        std::string get_dificuldade();
         /**
          * Retorna a próxima palavra de acordo com a dificuldade atual.
          * Este método deve atualizar o atributo m_palavra_atual e retornar a palavra um texto no formato
@@ -70,6 +82,8 @@ class Forca {
          * @return o valor do atributo m_palavra_atual.
          */
         std::string get_palavra_atual();
+
+        void set_palavra_atual();
  
         /**
          * Testa se uma letra pertence á palavra atual, retorna T se a letra pertence.
@@ -99,5 +113,30 @@ class Forca {
          * @return a quantidade de tentativas restantes.
          */
         int get_tentativas_restantes();
- 
+
+        void set_pontuacao(int p);
+
+        void set_media_frequencia();
+
+        int get_pontuacao();
+
+        void exibir_scores();
+
+        void exibir_menu_inicial();
+
+        void exibir_opcoes_dificuldade();
+
+        void get_palavra_tempo_real();
+
+        bool acertou_palavra();
+
+        std::vector<std::string> get_palavras_certas();
+
+        void set_letras_acerto(std::vector<int> index, std::string let);
+
+        std::vector<int> get_indices_acerto(char letra);
+
+        bool verificar_se_letra_ja_foi(std::string str);
+
+        void set_palavra_certa();
 };
