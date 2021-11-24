@@ -55,32 +55,63 @@ std::string Forca::proxima_palavra() {
     letras_informadas.clear();
     palavra_tempo_real.clear();
     std::vector<std::string> palavras;
+    //Nível fácil
     if (dificuldade == 0) {
         for (int i = 0; i < m_palavras.size(); i++) {
+            // Verifica se a palavra é maior ou igual a frequência
             if (m_palavras[i].second >= media_frequencia) {
                 palavras.push_back(m_palavras[i].first);
             }
         }
-    } else if (dificuldade == 1) {
+    } 
+    //Nível médio
+    else if (dificuldade == 1) {
         for (int i = 0; i < m_palavras.size(); i++) {
+            /**
+             * Como a cada 3 palavras sorteadas, 1 tem que ser menor que a frequência média
+             * neste if está verificando se foi sorteado até 2 palavras e caso sim adiciona no array
+             * de palavras apenas as palavras com frequência maior ou igual a frequência média
+            **/
             if (qtd_palavras_jogadas < 3) {
                 if(m_palavras[i].second >= media_frequencia) {
                     palavras.push_back(m_palavras[i].first);
-                } else {
-                    palavras.push_back(m_palavras[i].first);
-                }
+                } 
+            } 
+            /**
+             * caso não, significa que já foi sorteado 2 palavras e a 3 tem que ser menor que a frequencia média
+             * verifica se a palavra é menor ou igual a frequencia média e adicona ao array em caso positivo
+            **/
+            else if (m_palavras[i].second < media_frequencia) {
+                palavras.push_back(m_palavras[i].first);
             }
         }
-    } else {
+    } 
+    //Nível dificil
+    else {
         for (int i = 0; i < m_palavras.size(); i++) {
             if (m_palavras[i].second < media_frequencia) {
                 palavras.push_back(m_palavras[i].first);
             }
         }
     }
-    qtd_palavras_jogadas = qtd_palavras_jogadas == 3 ? 0 : qtd_palavras_jogadas + 1;
+    qtd_palavras_jogadas = qtd_palavras_jogadas == 3 ? 1 : qtd_palavras_jogadas + 1;
+    //Remove do array de palavras as palavras que já foram jogadas, ou seja, cada palavra só é sorteada, no máximo, 1 vez
+    for (int i = 0; i < palavras.size(); i++) {
+        for (int j = 0; j < palavras_certas.size(); j++) {
+            if (palavras[i] == palavras_certas[j]) {
+                palavras.erase(palavras.begin() + i);
+                i--;
+                break;
+            }
+        }
+    }
     srand((unsigned)time(0));
-    return palavras[rand() % (palavras.size() + 1)];
+    int index = 0;
+    if (palavras.size()) {
+        index = rand() % (palavras.size());
+    }
+    //Caso existam palavras no array, retorna a palavra sorteada. Caso contrário retorna "0" que será usado como condição de parada
+    return palavras.size() ? palavras[index] : "0";
 }
 
 void Forca::set_media_frequencia() {

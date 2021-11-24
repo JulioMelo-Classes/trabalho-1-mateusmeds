@@ -25,7 +25,7 @@ class Forca {
 
         float media_frequencia; //<! 
 
-        int qtd_palavras_jogadas; //<! Armazena a quantidade de palavras sorteadas para usar como base de cálculo para o nível de dificuldade Médio
+        int qtd_palavras_jogadas = 1; //<! Armazena a quantidade de palavras sorteadas para usar como base de cálculo para o nível de dificuldade Médio
 
         std::vector<std::string> palavra_tempo_real;
 

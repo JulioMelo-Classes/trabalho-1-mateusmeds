@@ -17,6 +17,13 @@ int main (int argc, char *argv[]) {
     int opcaoInicio;
     int etapa = 1;
 
+    /**
+     * Etapa 1 -> Exibe menu inicial
+     * Etapa 2 -> Exibe opões de níveis de dificuldade para o jogador escolher
+     * Etapa 3 -> Sorteia a palavra, verifica se existem palavras disponíveis e inicializa os atributos para começar o jogo
+     * Etapa 4 -> É o jogo em andamento, enquanto não der game over ou o jogador encerrar
+     * Etapa 5 -> Significa que acabou o jogo. Ou o jogador encerrou ou não existem mais palavras disponíveis
+     */
     while (!forca.game_over()) {
         while (etapa == 1) {
             forca.exibir_menu_inicial();
@@ -45,11 +52,16 @@ int main (int argc, char *argv[]) {
             etapa = 3;
         }
         if (etapa == 3) {
-            cout<< "Iniciando o Jogo da Forca no nível " + forca.get_dificuldade() <<endl;
             forca.set_media_frequencia();
             forca.set_palavra_atual();
-            forca.set_tentativas_restantes(6);
-            etapa = 4;
+            if (forca.get_palavra_atual() == "0") {
+                cout<< "Você é demais! Acertou todas as palavras do nível " + forca.get_dificuldade() + " e o jogo acabou!"<<endl;
+                etapa = 5;
+            } else {
+                cout<< "Iniciando o Jogo da Forca no nível " + forca.get_dificuldade() <<endl;
+                forca.set_tentativas_restantes(6);
+                etapa = 4;
+            }
         }
         while (forca.get_tentativas_restantes() > 0 && etapa == 4) {
             forca.get_palavra_tempo_real();
@@ -119,9 +131,9 @@ int main (int argc, char *argv[]) {
     //TODO: por algum motivo não estava lendo o nome do jogador, tive que acresentar esta linha
     std::string lixo;
     getline(cin, lixo);
-
+    
     getline(cin, nome);
-    cout<< nome <<endl;
+
     Partida partida = Partida();
     
     partida.set_dificuldade(forca.get_dificuldade());
